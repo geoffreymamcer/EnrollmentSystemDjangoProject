@@ -1,0 +1,26 @@
+# backend/.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment (Crucial to ignore)
+venv/
+env/
+.venv/
+
+# Environment Variables (NEVER commit secrets)
+.env
+
+# Database (Local SQLite if any)
+db.sqlite3
+
+# Static & Media
+staticfiles/
+media/
+
+# IDE Settings
+.vscode/
+.idea/
