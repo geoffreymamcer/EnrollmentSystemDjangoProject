@@ -18,6 +18,7 @@ import Enrollment from "./pages/Enrollment";
 import Profile from "./pages/Profile";
 import type { User } from "./types";
 import "./index.css";
+import BASE_URL from "./api/base_url";
 
 const App: React.FC = () => {
   // 1. Initialize Auth from LocalStorage
@@ -47,7 +48,7 @@ const App: React.FC = () => {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/profile/", {
+      const response = await fetch(`${BASE_URL}/api/profile/`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
