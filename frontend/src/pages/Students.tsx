@@ -15,6 +15,7 @@ import {
   Trash2,
 } from "lucide-react";
 /* 🛑 END OF CHANGE 🛑 */
+import BASE_URL from "../api/base_url";
 
 /* 🏁 START OF CHANGE: Action Menu Component 🏁 */
 // ➕ 🟢 ADDED: Dropdown for Edit/Delete
@@ -86,8 +87,8 @@ const Students: React.FC = () => {
 
       // 🚀 Fetch Students and Departments in parallel
       const [stuRes, deptRes] = await Promise.all([
-        fetch("http://127.0.0.1:8000/api/students/", { headers }),
-        fetch("http://127.0.0.1:8000/api/departments/", { headers }),
+        fetch(`${BASE_URL}/api/students/`, { headers }),
+        fetch(`${BASE_URL}/api/departments/`, { headers }),
       ]);
 
       if (!stuRes.ok || !deptRes.ok) throw new Error("Failed to fetch data");
@@ -133,7 +134,7 @@ const Students: React.FC = () => {
         department: formData.departmentId, // Send ID to backend
       };
 
-      let url = "http://127.0.0.1:8000/api/students/";
+      let url = `${BASE_URL}/api/students/`;
       let method = "POST";
 
       if (editingItem) {
@@ -180,13 +181,10 @@ const Students: React.FC = () => {
     if (!window.confirm("Are you sure you want to delete this student?"))
       return;
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/students/${id}/`,
-        {
-          method: "DELETE",
-          headers: getAuthHeaders(),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/api/students/${id}/`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
 
       if (!response.ok) throw new Error("Failed to delete");
 

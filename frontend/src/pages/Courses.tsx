@@ -3,6 +3,7 @@ import { GenericTable } from "../components/GenericTable";
 import type { Course, Instructor } from "../types";
 import { Modal } from "../components/Modal";
 import type { FormField } from "../components/Modal";
+import BASE_URL from "../api/base_url";
 import {
   Loader2,
   AlertCircle,
@@ -71,8 +72,8 @@ const Courses: React.FC = () => {
       const headers = getAuthHeaders();
 
       const [courseRes, instRes] = await Promise.all([
-        fetch("http://127.0.0.1:8000/api/courses/", { headers }),
-        fetch("http://127.0.0.1:8000/api/instructors/", { headers }),
+        fetch(`${BASE_URL}/api/courses/`, { headers }),
+        fetch(`${BASE_URL}/api/instructors/`, { headers }),
       ]);
 
       if (!courseRes.ok || !instRes.ok) throw new Error("Failed to fetch data");
@@ -122,7 +123,7 @@ const Courses: React.FC = () => {
         instructor: formData.instructorId,
       };
 
-      let url = "http://127.0.0.1:8000/api/courses/";
+      let url = `${BASE_URL}/api/courses/`;
       let method = "POST";
 
       if (editingItem) {
@@ -165,7 +166,7 @@ const Courses: React.FC = () => {
   const handleDelete = async (id: string | number) => {
     if (!window.confirm("Are you sure you want to delete this course?")) return;
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/courses/${id}/`, {
+      const response = await fetch(`${BASE_URL}api/courses/${id}/`, {
         method: "DELETE",
         headers: getAuthHeaders(),
       });

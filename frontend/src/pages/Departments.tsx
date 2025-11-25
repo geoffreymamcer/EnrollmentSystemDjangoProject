@@ -3,6 +3,7 @@ import { GenericTable } from "../components/GenericTable";
 import { Modal } from "../components/Modal";
 import type { Department } from "../types";
 import type { FormField } from "../components/Modal";
+import BASE_URL from "../api/base_url";
 import {
   Loader2,
   AlertCircle,
@@ -69,7 +70,7 @@ const Departments: React.FC = () => {
   const fetchDepartments = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://127.0.0.1:8000/api/departments/", {
+      const response = await fetch(`${BASE_URL}/api/departments/`, {
         headers: getAuthHeaders(),
       });
       if (!response.ok) throw new Error("Failed to fetch departments");
@@ -106,7 +107,7 @@ const Departments: React.FC = () => {
         established_date: formData.establishedDate,
       };
 
-      let url = "http://127.0.0.1:8000/api/departments/";
+      let url = `${BASE_URL}/api/departments/`;
       let method = "POST";
 
       if (editingItem) {
@@ -151,13 +152,10 @@ const Departments: React.FC = () => {
       return;
 
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/departments/${id}/`,
-        {
-          method: "DELETE",
-          headers: getAuthHeaders(),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/api/departments/${id}/`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
 
       if (!response.ok) throw new Error("Failed to delete");
 

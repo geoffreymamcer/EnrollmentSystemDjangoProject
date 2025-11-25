@@ -17,6 +17,7 @@ import {
   Loader2,
   User,
 } from "lucide-react";
+import BASE_URL from "../api/base_url";
 
 const Profile: React.FC = () => {
   // 1. State Management
@@ -50,7 +51,7 @@ const Profile: React.FC = () => {
         const headers: any = getAuthHeaders();
         headers["Content-Type"] = "application/json";
 
-        const response = await fetch("http://127.0.0.1:8000/api/profile/", {
+        const response = await fetch(`${BASE_URL}/api/profile/`, {
           headers: headers,
         });
 
@@ -106,7 +107,7 @@ const Profile: React.FC = () => {
       uploadData.append("avatar", file); // Must match serializer field name
 
       // NOTE: Do NOT set 'Content-Type' header. Browser sets it to multipart/form-data automatically.
-      const response = await fetch("http://127.0.0.1:8000/api/profile/", {
+      const response = await fetch(`${BASE_URL}/api/profile/`, {
         method: "PATCH",
         headers: getAuthHeaders(),
         body: uploadData,
@@ -135,7 +136,7 @@ const Profile: React.FC = () => {
       uploadData.append("last_name", formData.lastName);
       uploadData.append("email", formData.email);
 
-      const response = await fetch("http://127.0.0.1:8000/api/profile/", {
+      const response = await fetch(`${BASE_URL}/api/profile/`, {
         method: "PATCH",
         headers: getAuthHeaders(),
         body: uploadData,

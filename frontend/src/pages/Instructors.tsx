@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Modal } from "../components/Modal";
 import type { FormField } from "../components/Modal";
+import BASE_URL from "../api/base_url";
 
 const ActionMenu = ({
   onEdit,
@@ -72,8 +73,8 @@ const Instructors: React.FC = () => {
       const headers = getAuthHeaders();
 
       const [instRes, deptRes] = await Promise.all([
-        fetch("http://127.0.0.1:8000/api/instructors/", { headers }),
-        fetch("http://127.0.0.1:8000/api/departments/", { headers }),
+        fetch(`${BASE_URL}/api/instructors/`, { headers }),
+        fetch(`${BASE_URL}/api/departments/`, { headers }),
       ]);
 
       if (!instRes.ok || !deptRes.ok) throw new Error("Failed to fetch data");
@@ -114,7 +115,7 @@ const Instructors: React.FC = () => {
         department: formData.departmentId,
       };
 
-      let url = "http://127.0.0.1:8000/api/instructors/";
+      let url = `${BASE_URL}/api/instructors/`;
       let method = "POST";
 
       if (editingItem) {
@@ -158,7 +159,7 @@ const Instructors: React.FC = () => {
     if (!window.confirm("Are you sure you want to delete this instructor?"))
       return;
     try {
-      await fetch(`http://127.0.0.1:8000/api/instructors/${id}/`, {
+      await fetch(`${BASE_URL}/api/instructors/${id}/`, {
         method: "DELETE",
         headers: getAuthHeaders(),
       });

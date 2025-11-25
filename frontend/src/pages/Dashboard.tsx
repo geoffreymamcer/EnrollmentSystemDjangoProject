@@ -21,6 +21,8 @@ import {
   Loader2,
 } from "lucide-react";
 
+import BASE_URL from "../api/base_url";
+
 // --- Types needed for local state ---
 interface DashboardStat {
   students: number;
@@ -134,11 +136,11 @@ const Dashboard: React.FC = () => {
         // 3. Fetch ALL data in parallel
         const [stuRes, instRes, courseRes, deptRes, enrRes] = await Promise.all(
           [
-            fetch("http://127.0.0.1:8000/api/students/", { headers }),
-            fetch("http://127.0.0.1:8000/api/instructors/", { headers }),
-            fetch("http://127.0.0.1:8000/api/courses/", { headers }),
-            fetch("http://127.0.0.1:8000/api/departments/", { headers }),
-            fetch("http://127.0.0.1:8000/api/enrollments/", { headers }),
+            fetch(`${BASE_URL}/api/students/`, { headers }),
+            fetch(`${BASE_URL}/api/instructors/`, { headers }),
+            fetch(`${BASE_URL}/api/courses/`, { headers }),
+            fetch(`${BASE_URL}/api/departments/`, { headers }),
+            fetch(`${BASE_URL}/api/enrollments/`, { headers }),
           ]
         );
 

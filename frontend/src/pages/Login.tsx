@@ -9,6 +9,7 @@ import {
   AlertCircle,
   Loader2,
 } from "lucide-react";
+import BASE_URL from "../api/base_url";
 
 interface LoginProps {
   onLogin: () => void;
@@ -37,7 +38,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
     try {
       // 🚀 1. Call Backend to get Token
-      const response = await fetch("http://127.0.0.1:8000/api/token/", {
+      const response = await fetch(`${BASE_URL}/api/token/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

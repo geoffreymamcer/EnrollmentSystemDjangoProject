@@ -7,6 +7,7 @@ import type { Enrollment, Student, Course } from "../types";
 import { EnrollmentStatus } from "../types";
 import { Modal } from "../components/Modal";
 import type { FormField } from "../components/Modal";
+import BASE_URL from "../api/base_url";
 // ➕ 🟢 ADDED: Icons and UI components
 import {
   Loader2,
@@ -88,9 +89,9 @@ const Enrollments: React.FC = () => {
 
       // 🚀 Request Enrollments, Students, and Courses in parallel
       const [enrRes, stuRes, courseRes] = await Promise.all([
-        fetch("http://127.0.0.1:8000/api/enrollments/", { headers }),
-        fetch("http://127.0.0.1:8000/api/students/", { headers }),
-        fetch("http://127.0.0.1:8000/api/courses/", { headers }),
+        fetch(`${BASE_URL}/api/enrollments/`, { headers }),
+        fetch(`${BASE_URL}/api/students/`, { headers }),
+        fetch(`${BASE_URL}/api/courses/`, { headers }),
       ]);
 
       if (!enrRes.ok || !stuRes.ok || !courseRes.ok)
@@ -159,7 +160,7 @@ const Enrollments: React.FC = () => {
         // enrollment_date is usually auto_now_add in Django, but if you need to edit it, add it here.
       };
 
-      let url = "http://127.0.0.1:8000/api/enrollments/";
+      let url = `${BASE_URL}/api/enrollments/`;
       let method = "POST";
 
       if (editingItem) {
@@ -205,13 +206,10 @@ const Enrollments: React.FC = () => {
     if (!window.confirm("Are you sure you want to delete this enrollment?"))
       return;
     try {
-      const response = await fetch(
-        `http://127.0.0.1:8000/api/enrollments/${id}/`,
-        {
-          method: "DELETE",
-          headers: getAuthHeaders(),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/api/enrollments/${id}/`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
 
       if (!response.ok) throw new Error("Failed to delete");
 
