@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('school.urls'))
+    re_path(r'^.*$', TemplateView.as_view(template_name='index.html'))
 ]
 
 if settings.DEBUG:

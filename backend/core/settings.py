@@ -56,7 +56,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -105,9 +105,10 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
-
-# Media URL (Used by Cloudinary)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'), # Where you pasted the assets
+]
 MEDIA_URL = '/media/' 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
