@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { GenericTable } from "../components/GenericTable";
 import type { Instructor, Department } from "../types";
-import {
-  Mail,
-  MoreVertical,
-  Pencil,
-  Trash2,
-  Loader2,
-  AlertCircle,
-} from "lucide-react";
+import { Mail, MoreVertical, Pencil, Trash2, AlertCircle } from "lucide-react";
 import { Modal } from "../components/Modal";
 import type { FormField } from "../components/Modal";
 import BASE_URL from "../api/base_url";

@@ -7,13 +7,7 @@ import type { Student, Department } from "../types";
 import { Modal } from "../components/Modal";
 import type { FormField } from "../components/Modal";
 // ➕ 🟢 ADDED: Icons for UI feedback and Actions
-import {
-  Loader2,
-  AlertCircle,
-  MoreVertical,
-  Pencil,
-  Trash2,
-} from "lucide-react";
+import { AlertCircle, MoreVertical, Pencil, Trash2 } from "lucide-react";
 /* 🛑 END OF CHANGE 🛑 */
 import BASE_URL from "../api/base_url";
 

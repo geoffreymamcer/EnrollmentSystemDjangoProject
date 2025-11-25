@@ -4,13 +4,7 @@ import type { Course, Instructor } from "../types";
 import { Modal } from "../components/Modal";
 import type { FormField } from "../components/Modal";
 import BASE_URL from "../api/base_url";
-import {
-  Loader2,
-  AlertCircle,
-  MoreVertical,
-  Pencil,
-  Trash2,
-} from "lucide-react";
+import { AlertCircle, MoreVertical, Pencil, Trash2 } from "lucide-react";
 
 const ActionMenu = ({
   onEdit,

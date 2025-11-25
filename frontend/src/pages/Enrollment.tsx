@@ -1,25 +1,12 @@
-/* 🏁 START OF CHANGE: Imports 🏁 */
 import React, { useEffect, useState } from "react";
 import { GenericTable } from "../components/GenericTable";
-// ❌ DELETED: MockService removed
-// import { MockService } from "../services/mockdata";
 import type { Enrollment, Student, Course } from "../types";
 import { EnrollmentStatus } from "../types";
 import { Modal } from "../components/Modal";
 import type { FormField } from "../components/Modal";
 import BASE_URL from "../api/base_url";
-// ➕ 🟢 ADDED: Icons and UI components
-import {
-  Loader2,
-  AlertCircle,
-  MoreVertical,
-  Pencil,
-  Trash2,
-} from "lucide-react";
-/* 🛑 END OF CHANGE 🛑 */
+import { AlertCircle, MoreVertical, Pencil, Trash2 } from "lucide-react";
 
-/* 🏁 START OF CHANGE: Action Menu Component 🏁 */
-// ➕ 🟢 ADDED: Dropdown for table actions
 const ActionMenu = ({
   onEdit,
   onDelete,
@@ -56,7 +43,6 @@ const ActionMenu = ({
     </div>
   );
 };
-/* 🛑 END OF CHANGE 🛑 */
 
 const Enrollments: React.FC = () => {
   const [data, setData] = useState<Enrollment[]>([]);
@@ -65,13 +51,9 @@ const Enrollments: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  /* 🏁 START OF CHANGE: State Management 🏁 */
-  // ➕ 🟢 ADDED: State for errors and editing
   const [error, setError] = useState<string | null>(null);
   const [editingItem, setEditingItem] = useState<Enrollment | null>(null);
-  /* 🛑 END OF CHANGE 🛑 */
 
-  // ➕ 🟢 ADDED: Auth Helper
   const getAuthHeaders = () => {
     const token = localStorage.getItem("accessToken");
     return {
@@ -80,14 +62,11 @@ const Enrollments: React.FC = () => {
     };
   };
 
-  /* 🏁 START OF CHANGE: Data Fetching 🏁 */
-  // ✏️ MODIFIED: Fetch 3 distinct resources
   const fetchData = async () => {
     try {
       setLoading(true);
       const headers = getAuthHeaders();
 
-      // 🚀 Request Enrollments, Students, and Courses in parallel
       const [enrRes, stuRes, courseRes] = await Promise.all([
         fetch(`${BASE_URL}/api/enrollments/`, { headers }),
         fetch(`${BASE_URL}/api/students/`, { headers }),
@@ -101,17 +80,15 @@ const Enrollments: React.FC = () => {
       const stuData = await stuRes.json();
       const courseData = await courseRes.json();
 
-      // 🔄 TRANSFORM: Django (snake_case) -> React (camelCase)
       const formattedEnrollments: Enrollment[] = enrData.map((item: any) => ({
         id: item.id,
-        studentId: item.student, // DB sends ID
-        courseId: item.course, // DB sends ID
+        studentId: item.student,
+        courseId: item.course,
         enrollmentDate: item.enrollment_date,
         status: item.status,
         grade: item.grade,
       }));
 
-      // 🔄 TRANSFORM Students
       const formattedStudents: Student[] = stuData.map((item: any) => ({
         id: item.id,
         firstName: item.first_name,
@@ -121,7 +98,6 @@ const Enrollments: React.FC = () => {
         departmentId: item.department,
       }));
 
-      // 🔄 TRANSFORM Courses
       const formattedCourses: Course[] = courseData.map((item: any) => ({
         id: item.id,
         title: item.title,
@@ -145,19 +121,14 @@ const Enrollments: React.FC = () => {
   useEffect(() => {
     fetchData();
   }, []);
-  /* 🛑 END OF CHANGE 🛑 */
 
-  /* 🏁 START OF CHANGE: CRUD Operations 🏁 */
-  // ➕ 🟢 ADDED: Save Logic (Create/Update)
   const handleSave = async (formData: any) => {
     try {
-      // 🔄 TRANSFORM: React -> Django Payload
       const payload = {
-        student: formData.studentId, // ID
-        course: formData.courseId, // ID
+        student: formData.studentId,
+        course: formData.courseId,
         status: formData.status || "Enrolled",
-        grade: formData.grade || null, // Allow empty grade
-        // enrollment_date is usually auto_now_add in Django, but if you need to edit it, add it here.
+        grade: formData.grade || null,
       };
 
       let url = `${BASE_URL}/api/enrollments/`;
@@ -178,7 +149,6 @@ const Enrollments: React.FC = () => {
 
       const savedItem = await response.json();
 
-      // 🔄 TRANSFORM BACK: Django -> React
       const newItem: Enrollment = {
         id: savedItem.id,
         studentId: savedItem.student,
@@ -201,7 +171,6 @@ const Enrollments: React.FC = () => {
     }
   };
 
-  // ➕ 🟢 ADDED: Delete Logic
   const handleDelete = async (id: string | number) => {
     if (!window.confirm("Are you sure you want to delete this enrollment?"))
       return;
@@ -228,10 +197,7 @@ const Enrollments: React.FC = () => {
     setEditingItem(null);
     setIsModalOpen(true);
   };
-  /* 🛑 END OF CHANGE 🛑 */
 
-  /* 🏁 START OF CHANGE: Helpers for Display 🏁 */
-  // ✏️ MODIFIED: Helpers using real state data instead of MockService
   const getStudentName = (id: string | number) => {
     const s = students.find((student) => student.id == id);
     return s ? `${s.firstName} ${s.lastName}` : "Unknown Student";
@@ -241,9 +207,7 @@ const Enrollments: React.FC = () => {
     const c = courses.find((course) => course.id == id);
     return c ? `${c.courseCode} - ${c.title}` : "Unknown Course";
   };
-  /* 🛑 END OF CHANGE 🛑 */
 
-  /* 🏁 START OF CHANGE: Form Fields 🏁 */
   const formFields: FormField[] = [
     {
       name: "studentId",
@@ -267,7 +231,6 @@ const Enrollments: React.FC = () => {
         value: c.id.toString(),
       })),
     },
-    // ➕ 🟢 ADDED: Status and Grade fields for full editing
     {
       name: "status",
       label: "Status",
@@ -287,7 +250,6 @@ const Enrollments: React.FC = () => {
       placeholder: "e.g. A, 95.5",
     },
   ];
-  /* 🛑 END OF CHANGE 🛑 */
 
   const getStatusBadge = (
     status: (typeof EnrollmentStatus)[keyof typeof EnrollmentStatus]
@@ -320,7 +282,6 @@ const Enrollments: React.FC = () => {
     }
   };
 
-  /* 🏁 START OF CHANGE: Error UI 🏁 */
   if (error) {
     return (
       <div className="p-8 text-center text-red-500 bg-red-50 rounded-xl border border-red-200">
@@ -329,7 +290,6 @@ const Enrollments: React.FC = () => {
       </div>
     );
   }
-  /* 🛑 END OF CHANGE 🛑 */
 
   return (
     <>
@@ -337,7 +297,7 @@ const Enrollments: React.FC = () => {
         title="Student Enrollments"
         data={data}
         isLoading={loading}
-        onAdd={openCreateModal} // ✏️ MODIFIED: Use new handler
+        onAdd={openCreateModal}
         columns={[
           {
             header: "ID",
@@ -347,7 +307,6 @@ const Enrollments: React.FC = () => {
           },
           {
             header: "Student",
-            // ✏️ MODIFIED: Use local helper
             accessor: (item) => (
               <span className="font-medium text-slate-900">
                 {getStudentName(item.studentId)}
@@ -356,7 +315,6 @@ const Enrollments: React.FC = () => {
           },
           {
             header: "Course",
-            // ✏️ MODIFIED: Use local helper
             accessor: (item) => getCourseTitle(item.courseId),
           },
           { header: "Date", accessor: (item) => item.enrollmentDate },
@@ -370,8 +328,6 @@ const Enrollments: React.FC = () => {
                 <span className="text-slate-300">-</span>
               ),
           },
-          /* 🏁 START OF CHANGE: Actions Column 🏁 */
-          // ➕ 🟢 ADDED: 3-dots menu
           {
             header: "",
             accessor: (item) => (
@@ -381,17 +337,14 @@ const Enrollments: React.FC = () => {
               />
             ),
           },
-          /* 🛑 END OF CHANGE 🛑 */
         ]}
       />
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        // ✏️ MODIFIED: Dynamic Title
         title={editingItem ? "Update Enrollment" : "Enroll New Student"}
         fields={formFields}
         onSubmit={handleSave}
-        // ➕ 🟢 ADDED: Pass existing data
         initialData={editingItem || undefined}
       />
     </>
